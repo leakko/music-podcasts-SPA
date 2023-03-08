@@ -17,7 +17,7 @@ const App: React.FC = () => {
         <link rel="stylesheet" href={useAsset("/style.css")} />
       </head>
       <body>
-        <Suspense>
+        <Suspense fallback={<div>Loading...</div>}>
           <Routes>
               <Route path="/" element={<DefaultLayout />}>
                 <Route index element={<HomePage />} />
