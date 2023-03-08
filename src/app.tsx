@@ -1,6 +1,10 @@
 import useAsset from "ultra/hooks/use-asset.js";
-// Twind
-import { tw } from "./common/twind/twind.ts";
+import { lazy, Suspense } from "react";
+import { Route, Routes } from "react-router-dom";
+
+const HomePage = lazy(() => import("./pages/Home.tsx"));
+const NotFound = lazy(() => import("./pages/NotFound.tsx"));
+const DefaultLayout = lazy(() => import("./layouts/DefaultLayout.tsx"));
 
 const App: React.FC = () => {
   return (
@@ -13,27 +17,14 @@ const App: React.FC = () => {
         <link rel="stylesheet" href={useAsset("/style.css")} />
       </head>
       <body>
-        <main>
-          <h1 className={tw(`text-8xl font-mono margin mb-8`)}>
-            <span></span>__<span></span>
-          </h1>
-          <p>
-            Welcome to{" "}
-            <strong>Ultra</strong>. This is a barebones starter for your web
-            app.
-          </p>
-          <p>
-            Take{" "}
-            <a
-              href="https://ultrajs.dev/docs"
-              target="_blank"
-            >
-              this
-            </a>, you may need it where you are going. It will show you how to
-            customize your routing, data fetching, and styling with popular
-            libraries.
-          </p>
-        </main>
+        <Suspense>
+          <Routes>
+              <Route path="/" element={<DefaultLayout />}>
+                <Route index element={<HomePage />} />
+                <Route path="*" element={<NotFound />} />
+              </Route>
+          </Routes>
+        </Suspense>
       </body>
     </html>
   );
